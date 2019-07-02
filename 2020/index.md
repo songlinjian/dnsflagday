@@ -27,84 +27,70 @@ flagdayyear: 2020
 Thank you!
 ==========
 
-The [2019 DNS flag day](/2019/) was a very successful event. The Internet
-community worked together and fixed problems which were causing delays and
-other problems for Internet users worldwide. We would like to thank all
-operators who cooperated and helped to make Internet a better place.
+2019年DNS Flag Day是一个非常成功的活动。互联网社区共同努力解决了一系列带给全球互联网用户
+延迟和其他故障的问题。我们要感谢所有合作和帮助互联网变得更好的运营商。
 
-Summary of the past and future DNS flag days can be found e.g. in
-[https://youtu.be/mH_elg9EUWw?t=649](https://youtu.be/mH_elg9EUWw?t=649).
+过去的的总结，和未来DNS Flag Day计划请参考： https://youtu.be/mH_elg9EUWw?t=649.
 
-Contents
+目录
 ========
-- [What's next?](#whats-next)
+- [下一步的计划？](#whats-next)
 - [DNS Flag Day 2020](#dns-flag-day-2020)
-  - [Note: Work in progress](#note-work-in-progress)
-  - [Action: Authoritative DNS Operators](#action-authoritative-dns-operators)
-  - [Action: DNS Resolver Operators](#action-dns-resolver-operators)
-  - [Action: DNS software vendors](#action-dns-software-vendors)
-  - [How to test?](#how-to-test)
-- [Previous flag days](#previous-flag-days)
-- [Who's behind DNS flag day?](#whos-behind-dns-flag-day)
-- [Get in touch](#get-in-touch)
-- [Supporters](#supporters)
-- [FAQ](#faq)
+  - [注: 进程中的工作](#note-work-in-progress)
+  - [行动: 权威DNS运营者](#action-authoritative-dns-operators)
+  - [行动: 递归DNS运营者](#action-dns-resolver-operators)
+  - [行动: DNS软件的设备商](#action-dns-software-vendors)
+  - [如何测试?](#how-to-test)
+- [以前的 flag days](#previous-flag-days)
+- [谁在支持DNS flag day?](#whos-behind-dns-flag-day)
+- [取得联系](#get-in-touch)
+- [支持者](#supporters)
+- [常见问题](#faq)
 
-What's next?
+下一步的计划？
 ============
 
-The next DNS flag day is being planned right now. It will focus on the
-operational and security problems in DNS caused by Internet Protocol
-packet fragmentation.
+下一步的DNS flag day的计划正在制定中. 它将聚焦由IP报文分片导致的DNS的运营和安全的问题。
 
-Please subscribe to [the dns-announce mailing list](https://lists.dns-oarc.net/mailman/listinfo/dns-announce)
-or follow [@dnsflagday on Twitter](https://www.twitter.com/dnsflagday)
-to receive a notification when more information becomes available.
+为了获得及时的信息推送，请订阅 [dns-announce邮件列表](https://lists.dns-oarc.net/mailman/listinfo/dns-announce) 
+或者关注 [Twitter账号 @dnsflagday](https://www.twitter.com/dnsflagday)
+
 
 DNS Flag Day 2020
 =================
 
-The DNS community has been discussing persistent interoperability and
-performance issues with the DNS system on industry mailing lists and at
-conferences such as [DNS-OARC 30](https://www.dns-oarc.net/oarc30) panel
-discussion ([video](https://youtu.be/mH_elg9EUWw?t=680),
+DNS社群一直在行业邮件列表和会议中讨论DNS持续的互操作性与系统性能问题，例如
+[DNS-OARC 30](https://www.dns-oarc.net/oarc30)， 专题讨论会 ([video](https://youtu.be/mH_elg9EUWw?t=680),
 [slides](https://indico.dns-oarc.net/event/31/contributions/678/attachments/673/1102/dns_flag_day_panel.pdf)).
 
-The proposed plan for the DNS flag day 2020 was announced at
-[RIPE78](https://ripe78.ripe.net) by Petr Špaček, CZ.NIC and Ondřej Surý,
-ISC ([video](https://ripe78.ripe.net/archives/video/28),
-[slides](https://ripe78.ripe.net/presentations/53-plenary.pdf)). This time,
-we will focus on the problems with IP fragmentation of DNS packets.
+2020 DNS Flag Day计划建议稿在[RIPE78](https://ripe78.ripe.net) 会议期间由 CZ.NIC的Petr Špaček, 和ISC的Ondřej Surý发布
+([video](https://ripe78.ripe.net/archives/video/28)，[slides](https://ripe78.ripe.net/presentations/53-plenary.pdf)). 
+这一次我们要聚焦在DNS报文的IP分片问题上。
 
-IP fragmentation is a problem on the Internet today, especially when it
-comes to large DNS messages. And even if fragmentation works it might not be
-secure enough for DNS.
+IP分片是一个当前互联网存在的问题，尤其是当遇到DNS消息比较大的时候。
+即时IP分片工作正常，它对DNS来说也可能不够安全。
+
+请参考：
 - Bonica R. et al, "[IP Fragmentation Considered Fragile](https://tools.ietf.org/html/draft-bonica-intarea-frag-fragile)", Work in Progress, July 2018
 - Huston G., "[IPv6, Large UDP Packets and the DNS](http://www.potaroo.net/ispcol/2017-08/xtn-hdrs.html)",  August 2017
 - Fujiwara K., "[Measures against cache poisoning attacks using IP fragmentation in DNS](https://indico.dns-oarc.net/event/31/contributions/692/)", May 2019
 
-These issues can be fixed by honoring an EDNS buffer size that will
-not cause fragmentation and by allowing DNS to switch from UDP to TCP when
-larger buffer sizes are not enough.
+这些问题的解决方法是通过设置一个固定的EDNS Buffer Size，使其不会导致IP层分片。 
+当有DNS大包超过这个Buffer Size 的时候，DNS将会从UDP模式切换到TCP传输（通过设置应答包的TC位）
 
-Note: Work in progress
+
+注: 正在开展的工作
 ----------------------
 
-This web site and some aspects of DNS flag day 2020 are work in progress.
-- The _exact date_ for the 2020 DNS Flag Day is not yet determined.
-- **Please note** that the _exact recommended EDNS buffer sizes_ have not
-  been agreed upon, the current ballpark around 1200 (1220, 1232, ...) is
-  to limit the risk of fragmentation in IPv6.
+这个网站和2020 DNS Flag Day的一些工作还在开展中（尚未确定）。
+- 2020 DNS Flag Day 的准确时间还没有确定
+- **请注意** 推荐的EDNS buffe size的精确值还没有确定，现在它的大致范围是 1200字节（1220, 1232, ...）。 这个取值主要目的是为了减少IPv6分片风险。
 
-Nevertheless, the technical requirements are already clear enough that
-operators and developers can start preparing by testing and fixing their
-systems.
+然而，技术需求已经足够清晰，运营者和开发者可以开始准备测试和改动他们的系统。
 
-If you have comments or suggestion then please join the discussion at
-[dns-operations](https://lists.dns-oarc.net/mailman/listinfo/dns-operations)
-mailing list.
+如果你对此有评论或建议，请参加[dns-operations](https://lists.dns-oarc.net/mailman/listinfo/dns-operations) 邮件列表的讨论.
 
-Action: Authoritative DNS Operators
+行动: 权威DNS运营者
 -----------------------------------
 
 For the authoritative side what you should do to help with these issues
@@ -123,7 +109,7 @@ for general compliance.
 
 {% include 2020_checker.html lang=site.data.2020_checker.en %}
 
-Action: DNS Resolver Operators
+行动: 递归DNS运营者
 ------------------------------
 
 For the resolver side it's more or less the same requirement as for
@@ -136,7 +122,7 @@ TCP if they receive a truncated UDP response (with TC=1 set)!_
 
 **Tester for clients DNS resolver is in development!**
 
-Action: DNS software vendors
+行动: DNS软件的设备商
 ----------------------------
 
 As a DNS software vendor it is important to be **standards compliant** and
@@ -149,7 +135,7 @@ and [RFC 6891 section 6.2.4.](https://tools.ietf.org/html/rfc6891#section-6.2.4)
 
 Motivation for the change is described in [IETF draft intarea-frag-fragile section 6.1](https://tools.ietf.org/html/draft-ietf-intarea-frag-fragile-10#section-6.1) and [IETF draft iab-protocol-maintenance](https://datatracker.ietf.org/doc/draft-iab-protocol-maintenance/).
 
-How to test?
+如何测试？
 ------------
 
 If you're a domain owner or an authoritative DNS operator you can use our
@@ -219,13 +205,13 @@ The configuration above will have no visible effect if everything works
 correctly, but some queries will fail to resolve if TCP transport is not
 available.
 
-Previous flag days
+以前的 flag days
 ==================
 
 Here is a list of the previous flag days:
 - [2019 EDNS workarounds](/2019/)
 
-Who's behind DNS flag day?
+谁在支持 DNS flag day?
 ==========================
 
 The DNS flag day effort is community driven by DNS software and service
@@ -236,7 +222,7 @@ If you have technical questions around DNS flag day you can join
 [the DNS-operations mailing list](https://lists.dns-oarc.net/mailman/listinfo/dns-operations)
 and ask them there.
 
-Get in touch
+取得联系
 ============
 
 For press & media inquiries please use media (at) dns-oarc.net and please put
@@ -247,13 +233,13 @@ For press & media inquiries please use media (at) dns-oarc.net and please put
 - Announcements: <https://lists.dns-oarc.net/mailman/listinfo/dns-announce>
 - Discussion: <https://lists.dns-oarc.net/mailman/listinfo/dns-operations>
 
-Supporters
+支持者
 ==========
 
 {% include 2020_supporters.html %}
 
-FAQ
-===
+常见问题
+======
 
 - Q: Is DNS over UDP dead?
 
