@@ -26,10 +26,10 @@ flagdayyear: 2020
   - [注: 在开展的工作](#注-在开展的工作)
   - [行动: 权威DNS运营者](#行动-权威DNS运营者)
   - [行动: 递归DNS运营者](#行动-递归DNS运营者)
-  - [行动: DNS软件的设备商](#行动-DNS软件的设备商)
+  - [行动: DNS软件供应商](#行动-DNS软件供应商)
   - [如何测试?](#如何测试)
 - [以前的 flag days](#以前的-flag-days)
-- [谁在支持 DNS flag day?](#谁在支持-dns-flag-day)
+- [谁在推动 DNS flag day?](#谁在推动-dns-flag-day)
 - [取得联系](#取得联系)
 - [支持者](#支持者)
 - [常见问题](#常见问题)
@@ -80,70 +80,52 @@ IP分片是一个当前互联网存在的问题，尤其是当遇到DNS消息比
 行动: 权威DNS运营者
 -----------------------------------
 
-For the authoritative side what you should do to help with these issues
-is to answer DNS queries over TCP (port 53), _check your firewall(s) also!_
+对于权威侧来说，需要你帮助做的是应答DNS over TCP的查询（53端口）。同时检查你的防火墙！
 
-You should also use an EDNS buffer size that will not cause fragmentation,
-recommended here is around 1220 bytes but it is still up for discussion.
+你也应该使用一个固定的EDNS buffer size，那样就不会造成分片。这里建议采用大概1220字节，但是这个取值仍然在讨论中。
 
-And lastly, _Authoritative DNS servers **MUST NOT** send answers larger
-than requested EDNS buffer size!_
+最后，权威DNS服务器**不可以**发送超过查询报文中请求的EDNS Buffer Size大小的报文!
 
-**NEW!** You can now check your domain by entering it below and pressing
-"Test!". This tester uses [ISC's EDNS Compliance Tester](https://ednscomp.isc.org/)
-and will check that it's `edns512tcp` test is successful among other tests
-for general compliance.
+**新闻！** 现在你可以测试检查你的域名了！通过在下面输入你的域名，然后按Test! 这个测试使用了[ISC的EDNS合规性测试器](https://ednscomp.isc.org/)，它会从所有通用合规性测试例中选择`edns512tcp` 来测试。
 
 {% include 2020_checker.html lang=site.data.2020_checker.en %}
 
 行动: 递归DNS运营者
 ------------------------------
 
-For the resolver side it's more or less the same requirement as for
-the authoritative, answer DNS queries over TCP (port 53) and use an
-EDNS buffer size _(~1220 bytes)_ that will not cause
-fragmentation. _Remember to check your firewall(s)!_
+对递归解析测来说，或多或少与权威的要求类似，即能够通过TCP(53端口)应答DNS查询，用固定的EDNS buffer size (大概1220字节)从而避免IP分片。记得要检查你的防火墙。
 
-And for that last important part, _Resolvers **MUST** repeat queries over
-TCP if they receive a truncated UDP response (with TC=1 set)!_
+最重要的是，递归解析服务器**必须**要通过TCP重复查询，如果他们收到一个被截断的UDP应答报文（TC被设置为1）！
 
-**Tester for clients DNS resolver is in development!**
+**对递归解析服务器的测试器还在开发中！**
 
-行动: DNS软件的设备商
+
+行动: DNS软件供应商
 ----------------------------
 
-As a DNS software vendor it is important to be **standards compliant** and
-to use a _**default EDNS buffer size** (~1220)_ that will not cause
-fragmentation.
+对DNS软件供应商重要的一点就是要**符合标准**，采用 **EDNS buffer size默认值** （~ 1220字节），这样就不会造成分片。
 
-Relevant standards are mainly [RFC 7766](https://tools.ietf.org/html/rfc7766),
+相关重要的标准主要是[RFC 7766](https://tools.ietf.org/html/rfc7766),
 [RFC 6891 section 6.2.3.](https://tools.ietf.org/html/rfc6891#section-6.2.3)
-and [RFC 6891 section 6.2.4.](https://tools.ietf.org/html/rfc6891#section-6.2.4).
+和 [RFC 6891 section 6.2.4.](https://tools.ietf.org/html/rfc6891#section-6.2.4).
 
-Motivation for the change is described in [IETF draft intarea-frag-fragile section 6.1](https://tools.ietf.org/html/draft-ietf-intarea-frag-fragile-10#section-6.1) and [IETF draft iab-protocol-maintenance](https://datatracker.ietf.org/doc/draft-iab-protocol-maintenance/).
+这一改动的动机记录在[IETF草案 intarea-frag-fragile section 6.1](https://tools.ietf.org/html/draft-ietf-intarea-frag-fragile-10#section-6.1) 和 [IETF草案 iab-protocol-maintenance](https://datatracker.ietf.org/doc/draft-iab-protocol-maintenance/).
 
 如何测试？
 ------------
 
-If you're a domain owner or an authoritative DNS operator you can use our
-web-based testing tool to check a domain, you will find it under
-[Action: Authoritative DNS Operators](#action-authoritative-dns-operators).
+如果你是一个域名的所有者，或者是权威DNS服务器运营者，你可以用我们基于网页的测试工具来检查一个域名，你可以在[“行动: 权威DNS运营者”](#行动-权威DNS运营者) 中找到。
 
-We are working on a web-based testing tool for clients and DNS resolver
-operators and once it's ready you will find it on this page,
+我也在开发针对客户端和DNS递归运营者的一套基于网页的测试工具。一旦准备好，你就可以在这个页面找到它。
 
-You can also test by using the following CLI commands:
+你也可以通过下面的CLI命令行来测试：
 
 ```shell
 $ dig +tcp @auth_IP yourdomain.example.
 $ dig +tcp @resolver_IP yourdomain.example.
 $ dig @resolver_IP test.knot-resolver.cz. TXT
 ```
-
-All DNS queries must be successful and commands with `+tcp` option or
-without it should return the same. If you are a service provider you can
-also test your authoritative and resolver services by allowing DNS over
-TCP and changing the configuration for the default EDNS buffer size:
+无论是否使用‘+tcp’选项,所有的DNS查询必须是成功的。如果你是一项业务的提供商，你也可以通过允许DNS支持TCP，以及改变下面默认的EDNS buffer size的配置来测试你的权威和递归服务。
 
 - BIND
 ```
@@ -188,32 +170,25 @@ server:
     ipv6-edns-size: 1220
 ```
 
-The configuration above will have no visible effect if everything works
-correctly, but some queries will fail to resolve if TCP transport is not
-available.
+以上的配置不会有明显的影响，如果一切工作正常。只是一些查询会失败，如果递归或者权威不支持TCP.
 
 以前的 flag days
 ==================
 
-Here is a list of the previous flag days:
+下面是以前的Flag day活动列表：
 - [2019 EDNS workarounds](/2019/)
 
-谁在支持 DNS flag day?
+谁在推动 DNS flag day?
 ==========================
 
-The DNS flag day effort is community driven by DNS software and service
-providers, and supported by [The DNS Operations, Analysis, and Research Center (DNS-OARC)](https://www.dns-oarc.net/)
-which most in the community are members of.
+DNS FLag Day的倡议活动由DNS软件和服务提供者社群发起，该活动也得到了[DNS-OARC](https://www.dns-oarc.net/)的支持（OARC的会员大部分都在这个社群内）。
 
-If you have technical questions around DNS flag day you can join
-[the DNS-operations mailing list](https://lists.dns-oarc.net/mailman/listinfo/dns-operations)
-and ask them there.
+如果你有围绕DNS Flag Day相关的技术的问题，你可以参与[DNS-operations邮件列表](https://lists.dns-oarc.net/mailman/listinfo/dns-operations)来向他们提问.
 
 取得联系
 ============
 
-For press & media inquiries please use media (at) dns-oarc.net and please put
-“DNS Flag Day" in the email subject line.
+新闻与媒体的问题请发信给 media (at) dns-oarc.net, 请将“DNS Flag Day” 填入邮件的主题栏。 注：邮箱(at)替换成@
 
 - Web: <https://dnsflagday.net/>
 - Twitter: <https://twitter.com/dnsflagday>
@@ -228,80 +203,60 @@ For press & media inquiries please use media (at) dns-oarc.net and please put
 常见问题
 ======
 
-- Q: Is DNS over UDP dead?
+- Q: 是不是DNS over UPD要消失绝迹了?
 
-  A: No, DNS over UDP will still be the main means of transportation as it
-     is massively scalable, very resource-efficient and fault-tolerant.
+  A: 不，DNS over UDP 将仍然是主要的DNS传输协议, 因为它大规模的可扩展性，很高资源效率和容错特性。
 
-- Q: TL;DR [RFC 7766](https://tools.ietf.org/html/rfc7766)
+- Q: 能一句话解释[RFC 7766](https://tools.ietf.org/html/rfc7766)么？
 
-  A: DNS **MUST** work over TCP!
+  A: DNS**必须**能在TCP上工作!
 
-- Q: Will everything break on date-to-be-decided 2020?
+- Q: 在2020即将发布的那一天，所有的通信都会出故障么？
 
-  A: Certainly not everything! Only a small percentage of sites is affected,
-     and this number is shrinking as operators work on fixing their systems.
-     On the date that will be announced major DNS resolver operators will
-     stop tolerating misbehavior which breaks published standards, so this
-     change will not affect sites which follows published standards.
-     Also, on the announced date software vendors will change behavior
-     _**in new software releases**_, so this change will also slowly affect
-     others who operate their own DNS resolvers.
+  A: 当然不是所有！只有少量的站点会受影响，而且这个数量会逐步减少当运营者开始修补他们的系统。
+     在即将发布的那一天，主要的DNS递归解析运营者将停止接受错误的、违反标准的行为，所以这个
+     改变不会影响那些符合标准的站点。另外，在发布的那一天软件供应商只在新版DNS软件中改变行为，
+     所以这个改变只会逐渐的影响到那些运营自己DNS递归解析服务的人。（翻译解释：新版DNS软件的推广和应用
+     需要一段时间，作为缓冲）
 
-- Q: Why is TCP support so important?
+- Q: 为什么TCP的支持（对DNS）这么重要？
 
-  A: Blocking TCP, or failure to support TCP, may result in resolution
-     failure and application-level timeouts.
+  A: 阻断TCP通信或者不能支持TCP可能会造成解析失效和应用层的超时。
 
-     Furthermore, TCP normally implements Path MTU Discovery and can avoid
-     IP fragmentation of TCP segments. It also makes it harder to spoof
-     DNS responses.
+     另外TCP通常实现了路径MTU检测，能够避免TCP分段在IP层分片。采用TCP也能够增加DNS应答欺骗的难度。
 
-     Finally, TCP support was recommended from the early standards
-     specification, but some implementers may have taken that to mean TCP
-     was optional, and so about ten years ago (August 2010)
-     [RFC 5966](https://tools.ietf.org/html/rfc5966) made it clear that
-     TCP support is absolutely required for compliance with the Internet
-     standards for DNS.
+     最后一点，早期的DNS标准中是建议“支持TCP”，但是一些软件开发人员当作TCP是可选项，所以大概10年之后
+     （2010年8月）[RFC 5966](https://tools.ietf.org/html/rfc5966)明确要求为了符合DNS的Internet标准，
+     TCP支持是绝对必要的。
 
-- Q: Why not just switch to TCP only?
 
-  A: DNS over UDP is fine for small packets that do not require IP
-     fragmentation. It can still be used for that class of DNS messages,
-     which is the larger part of the Internet traffic. Switching everything
-     over on TCP may cause stress on DNS services. While in principle
-     DNS over TCP only should be feasible, it is slower than DNS over UDP,
-     in the best case by a factor of 4 (based on Baptiste Jonglez work
-     [presented at RIPE76](https://ripe76.ripe.net/archives/video/63/)),
-     and it may limit the number of connections a DNS server can accept
-     simultaneously.
+- Q: 为什么不直接切换到纯TCP（放弃UDP）?
 
-- Q: Will this Flag Day require a software update?
+  A: DNS通过UDP传输特别适合小数据包，而且不需要IP分片，因此这类DNS数据包仍然会
+     采用UDP的传输，而且它们将占据大部分互联网DNS流量。切换所有的DNS流量到TCP
+     会给DNS服务带来压力。虽然原则上采用TCP的DNS是可行的，但它比采用UDP的DNS慢4倍
+     （根据一项Baptiste Jonglez的工作，[发表在RIPE76会议](https://ripe76.ripe.net/archives/video/63/)），因此他会限制DNS服务器能接受的并发连接的数量。
 
-  A: DNS software which follows published standards does not require upgrade
-     and will continue to work. E.g. supported versions of major open source
-     DNS servers will continue to work correctly.
 
-     Whether a particular deployment is compliant depends on the way the
-     software is configured, and on the firewall configuration used at
-     that site. Less commonly-used and custom or proprietary DNS software
-     may not be compliant, and may require updates.
+- Q: 将来Flag Day是否需要一个软件更新?
 
-- Q: Is the requirement for DNS over TCP actually a DNS standard?
+  A: 符合标准的DNS软件不需要软件升级，能够继续正常工作。比如，支持主要的开源软件的
+     DNS服务器将会工作的很好
 
-  A: Yes, it is.  The [RFC 1035](https://tools.ietf.org/html/rfc1035)
-     Section 4.2 Transport explicitly lists UDP and TCP transports as
-     equals.  Furthermore, [RFC 7766](https://tools.ietf.org/html/rfc7766)
-     makes the requirement for DNS over TCP mandatory to implement for DNS
-     vendors.  While it's at operator's discretion to allow traffic on the
-     TCP port 53, the inability to respond over TCP might lead to resolution
-     failure in case of DNS answers bigger than EDNS buffer size chose at
-     the client side.
+     特定部署是否兼容取决于软件的配置方式，以及该站点使用的防火墙配置。不太常用的定制
+     或专有DNS软件可能不兼容，可能需要更新。
 
-- Q: I want to support DNS flag day 2020, what do I do?
 
-  A: Great to hear!  You can add yourself as a supporter by making a
-     [pull request](https://github.com/dns-violations/dnsflagday/pulls) and
-     add name, image and URL to `_data/2020_supporters.yml`, or make
-     an [issue](https://github.com/dns-violations/dnsflagday/issues/new)
-     and supply the same information in that.
+- Q: DNS对TCP传输的要求是DNS标准么？
+
+  A: 是的，是标准的要求。[RFC 1035](https://tools.ietf.org/html/rfc1035)的4.2节
+     明确列出了UDP和TCP传输是同等要求的。此外 [RFC 7766](https://tools.ietf.org/html/rfc7766)
+     强制要求DNS软件提供商支持DNS TCP. 虽然是否允许TCP 53端口流量是由网络运营者决定的，
+     但是如果当DNS应答数据包大于客户端选择的EDNS buffer size大小，无法通过TCP响应可能导致DNS
+     解析失败。（翻译注:这种情况权威服务器将设置TC，要求Resolver用TCP重新发起请求）
+
+- Q: 我想要支持2020 DNS Flag Day，我应该怎么做?
+
+  A: 太好了！你可以把自己添加到支持者列表中。请生成过一个[合并请求](https://github.com/dns-violations/dnsflagday/pulls), 
+     增加你的名字，图标，和URL到 `_data/2020_supporters.yml`, 
+     或者通过添加一个[问题描述](https://github.com/dns-violations/dnsflagday/issues/new) 提供这些信息。
