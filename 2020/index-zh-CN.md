@@ -15,9 +15,9 @@ flagdayyear: 2020
 ==========
 
 2019年DNS Flag Day是一个非常成功的活动。互联网社区共同努力解决了一系列带给全球互联网用户
-延迟和其他故障的问题。我们要感谢所有合作和帮助互联网变得更好的运营商。
+延迟和其他故障的问题。我们要感谢所有合作和帮助互联网变得更好的运营者。
 
-过去的的总结，和未来DNS Flag Day计划请参考： https://youtu.be/mH_elg9EUWw?t=649.
+DNS Flag Day过去的总结和未来计划请参考： https://youtu.be/mH_elg9EUWw?t=649.
 
 目录
 ========
@@ -54,16 +54,15 @@ DNS社群一直在行业邮件列表和会议中讨论DNS持续的互操作性�
 ([video](https://ripe78.ripe.net/archives/video/28)，[slides](https://ripe78.ripe.net/presentations/53-plenary.pdf)). 
 这一次我们要聚焦在DNS报文的IP分片问题上。
 
-IP分片是一个当前互联网存在的问题，尤其是当遇到DNS消息比较大的时候。
-即时IP分片工作正常，它对DNS来说也可能不够安全。
+IP分片是一个当前互联网存在的问题，尤其是当DNS应答消息比较大的时候。 即使IP分片工作正常，它对DNS来说也可能不够安全。
 
 请参考：
 - Bonica R. et al, "[IP Fragmentation Considered Fragile](https://tools.ietf.org/html/draft-bonica-intarea-frag-fragile)", Work in Progress, July 2018
 - Huston G., "[IPv6, Large UDP Packets and the DNS](http://www.potaroo.net/ispcol/2017-08/xtn-hdrs.html)",  August 2017
 - Fujiwara K., "[Measures against cache poisoning attacks using IP fragmentation in DNS](https://indico.dns-oarc.net/event/31/contributions/692/)", May 2019
 
-这些问题的解决方法是通过设置一个固定的EDNS Buffer Size，使其不会导致IP层分片。 
-当有DNS大包超过这个Buffer Size 的时候，DNS将会从UDP模式切换到TCP传输（通过设置应答包的TC位）
+这些问题的解决方法是通过设置一个固定的EDNS buffer size (缓冲区大小)，使其不会导致IP层分片。 
+当有DNS大包超过这个缓冲区大小的时候，DNS将会从UDP模式切换到TCP传输（通过设置应答包的TC位）
 
 
 注: 在开展的工作
@@ -71,7 +70,7 @@ IP分片是一个当前互联网存在的问题，尤其是当遇到DNS消息比
 
 这个网站和2020 DNS Flag Day的一些工作还在开展中（尚未确定）。
 - 2020 DNS Flag Day 的准确时间还没有确定
-- **请注意** 推荐的EDNS buffe size的精确值还没有确定，现在它的大致范围是 1200字节（1220, 1232, ...）。 这个取值主要目的是为了减少IPv6分片风险。
+- **请注意** 推荐的EDNS 缓冲区大小的精确值还没有确定，现在它的大致范围是 1200字节（1220, 1232, ...）。 这个取值主要目的是为了减少IPv6分片风险。
 
 然而，技术需求已经足够清晰，运营者和开发者可以开始准备测试和改动他们的系统。
 
@@ -82,9 +81,9 @@ IP分片是一个当前互联网存在的问题，尤其是当遇到DNS消息比
 
 对于权威侧来说，需要你帮助做的是应答DNS over TCP的查询（53端口）。同时检查你的防火墙！
 
-你也应该使用一个固定的EDNS buffer size，那样就不会造成分片。这里建议采用大概1220字节，但是这个取值仍然在讨论中。
+你也应该使用一个固定的EDNS 缓冲区大小，那样就不会造成分片。这里建议采用大概1220字节，但是这个取值仍然在讨论中。
 
-最后，权威DNS服务器**不可以**发送超过查询报文中请求的EDNS Buffer Size大小的报文!
+最后，权威DNS服务器**不可以**发送超过查询报文中请求的EDNS 缓冲区大小大小的报文!
 
 **新闻！** 现在你可以测试检查你的域名了！通过在下面输入你的域名，然后按Test! 这个测试使用了[ISC的EDNS合规性测试器](https://ednscomp.isc.org/)，它会从所有通用合规性测试例中选择`edns512tcp` 来测试。
 
@@ -93,7 +92,7 @@ IP分片是一个当前互联网存在的问题，尤其是当遇到DNS消息比
 行动: 递归DNS运营者
 ------------------------------
 
-对递归解析测来说，或多或少与权威的要求类似，即能够通过TCP(53端口)应答DNS查询，用固定的EDNS buffer size (大概1220字节)从而避免IP分片。记得要检查你的防火墙。
+对递归解析测来说，或多或少与权威的要求类似，即能够通过TCP(53端口)应答DNS查询，用固定的EDNS 缓冲区大小 (大概1220字节)从而避免IP分片。记得要检查你的防火墙。
 
 最重要的是，递归解析服务器**必须**要通过TCP重复查询，如果他们收到一个被截断的UDP应答报文（TC被设置为1）！
 
@@ -103,7 +102,7 @@ IP分片是一个当前互联网存在的问题，尤其是当遇到DNS消息比
 行动: DNS软件供应商
 ----------------------------
 
-对DNS软件供应商重要的一点就是要**符合标准**，采用 **EDNS buffer size默认值** （~ 1220字节），这样就不会造成分片。
+对DNS软件供应商重要的一点就是要**符合标准**，采用 **EDNS 缓冲区大小默认值** （~ 1220字节），这样就不会造成分片。
 
 相关重要的标准主要是[RFC 7766](https://tools.ietf.org/html/rfc7766),
 [RFC 6891 section 6.2.3.](https://tools.ietf.org/html/rfc6891#section-6.2.3)
@@ -125,7 +124,7 @@ $ dig +tcp @auth_IP yourdomain.example.
 $ dig +tcp @resolver_IP yourdomain.example.
 $ dig @resolver_IP test.knot-resolver.cz. TXT
 ```
-无论是否使用‘+tcp’选项,所有的DNS查询必须是成功的。如果你是一项业务的提供商，你也可以通过允许DNS支持TCP，以及改变下面默认的EDNS buffer size的配置来测试你的权威和递归服务。
+无论是否使用‘+tcp’选项,所有的DNS查询必须是成功的。如果你是一项业务的提供商，你也可以通过允许DNS支持TCP，以及改变下面默认的EDNS 缓冲区大小的配置来测试你的权威和递归服务。
 
 - BIND
 ```
@@ -252,7 +251,7 @@ DNS FLag Day的倡议活动由DNS软件和服务提供者社群发起，该活�
   A: 是的，是标准的要求。[RFC 1035](https://tools.ietf.org/html/rfc1035)的4.2节
      明确列出了UDP和TCP传输是同等要求的。此外 [RFC 7766](https://tools.ietf.org/html/rfc7766)
      强制要求DNS软件提供商支持DNS TCP. 虽然是否允许TCP 53端口流量是由网络运营者决定的，
-     但是如果当DNS应答数据包大于客户端选择的EDNS buffer size大小，无法通过TCP响应可能导致DNS
+     但是如果当DNS应答数据包大于客户端选择的EDNS 缓冲区大小，无法通过TCP响应可能导致DNS
      解析失败。（翻译注:这种情况权威服务器将设置TC，要求Resolver用TCP重新发起请求）
 
 - Q: 我想要支持2020 DNS Flag Day，我应该怎么做?
