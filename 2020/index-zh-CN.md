@@ -30,7 +30,7 @@ DNS Flag Day过去的总结和未来计划请参考： https://youtu.be/mH_elg9E
   - [如何测试?](#如何测试)
 - [以前的 flag days](#以前的-flag-days)
 - [谁在推动 DNS flag day?](#谁在推动-dns-flag-day)
-- [取得联系](#取得联系)
+- [联系我们](#联系我们)
 - [支持者](#支持者)
 - [常见问题](#常见问题)
 
@@ -184,7 +184,7 @@ DNS FLag Day的倡议活动由DNS软件和服务提供者社群发起，该活�
 
 如果你有围绕DNS Flag Day相关的技术的问题，你可以参与[DNS-operations邮件列表](https://lists.dns-oarc.net/mailman/listinfo/dns-operations)来向他们提问.
 
-取得联系
+联系我们
 ============
 
 新闻与媒体的问题请发信给 media (at) dns-oarc.net, 请将“DNS Flag Day” 填入邮件的主题栏。 注：邮箱(at)替换成@
